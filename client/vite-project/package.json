@@ -14,6 +14,8 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
-    "svelte": "^3.59.2"
+    "socket.io-client": "^4.7.2",
+    "svelte": "^3.59.2",
+    "svelte-french-toast": "^1.2.0"
   }
 }

@@ -1,3 +1,19 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 
-export const user = writable(null); 
+function createUserStore() {
+  const { subscribe, set, update } = writable(null);
+
+  return {
+    subscribe,
+    set,
+    update,
+    refreshFromSession: () => {
+      const sessionUser = sessionStorage.getItem('user');
+      if (sessionUser) {
+        set(JSON.parse(sessionUser));
+      }
+    }
+  };
+}
+
+export const user = createUserStore();

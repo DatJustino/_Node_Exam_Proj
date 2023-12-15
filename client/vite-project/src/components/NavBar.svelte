@@ -1,47 +1,39 @@
 <!-- src/components/NavBar.svelte -->
 <script>
   import { user } from '../store/store.js'; // import the user store
-  
-  const navigate = (url) => {
-    window.location.pathname = url;
-    };
+  import { navigate, Link } from 'svelte-navigator';
+  import './navbar.css'; // Import the CSS file
+  const cookieName = 'sid';
+const cookieValue = 'NODEJS';
+const expires = new Date().toUTCString(); // Set the expiration date to a past date
 
-    async function logout() {
+
+  async function logout() {
     const response = await fetch('http://localhost:8080/logout', {
-    method: 'POST',
-    credentials: 'include',
-  });
+      method: 'POST',
+      credentials: 'include',
+    });
 
-  if (response.ok) {
-    user.set(null); // Clear the user store on successful logout
-    window.location.href = '/login'; // Redirect to login page
-  } else {
-    console.error('Logout failed');
-  }
-}
-
-
-</script>
-  
-  <nav>
-    <button on:click={() => navigate('/')}>Home</button>
-    <button on:click={() => navigate('/about')}>About Us</button>
-    <button on:click={() => navigate('/register')}>Register</button>
-    <button on:click={() => navigate('/login')}>Login</button>
-    <button on:click={logout}>Logout</button>
-
-  </nav>
-
-  {#if $user} <!-- This checks if $user is not null (i.e., the user is logged in) -->
-  <button on:click={() => window.location.href='/profile'}>Profile</button>
-{/if}
-
-  <style>
-    nav {
-      padding: 8px;   
-     }
-    button {
-      margin-right: 8px;
+    if (response.ok) {
+      document.cookie = `${cookieName}=${cookieValue};expires=${expires};path=/`; // Set the cookie to expire
+      sessionStorage.clear();
+      user.set(null); 
+      navigate('/') ; 
+    } else {
+      console.error('Logout failed');
     }
-  </style>
-  
+  }
+</script>
+
+<nav class="navbar">
+  <Link to="/">Home</Link>
+  <Link to="/aboutUs">About Us</Link>
+
+  {#if !$user}
+    <Link to="/register">Register</Link>
+    <Link to="/login">Login</Link>
+  {:else}
+    <Link to="/profile">Profile</Link>
+    <button class="logout" on:click={logout}>Logout</button>
+  {/if}
+</nav>

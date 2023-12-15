@@ -4,11 +4,15 @@
   </footer>
   
   <style>
-    footer {
-      /* Add your styles here */
-      text-align: center;
-      padding: 20px;
-      background-color: #242424;    
-    }
+     footer {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
   </style>
   
